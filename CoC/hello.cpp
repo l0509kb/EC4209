@@ -10,6 +10,6 @@ int main()
 	cout << "Yes!" << endl;
 	cout << "Hello Back!" << endl;
 	cout << "Smores!!" << endl;
-	cout << "Pull req" << endl;
+	cout << "Pull req." << endl;
 	return 0;
 }
