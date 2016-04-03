@@ -12,5 +12,7 @@ int main()
 	cout << "Smores!!" << endl;
 	cout << "Pull req." << endl;
 	cout << "changed" << endl;
+
+	cout << "hi" << endl;
 	return 0;
 }
