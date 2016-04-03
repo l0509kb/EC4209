@@ -13,6 +13,7 @@ int main()
 	cout << "Pull req." << endl;
 	cout << "changed" << endl;
 
-	cout << "kyubin test" << endl;
+	cout << "kyubin test whywwehwydyewwf" << endl;
+	cout << "ANNG Gimoti" << endl;
 	return 0;
 }
