@@ -125,7 +125,7 @@ public:
 
 private:
 	vector<Course*> course_list;
-	// unit
+	// unit needs to be included
 	int id, year;
 	int major; int minor;
 

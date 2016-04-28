@@ -25,11 +25,12 @@ int main()
 	cin.getline(path, 100);
 
 	// Parsing
-	//isParsed = in_conversion("C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC");
+	//isParsed = in_conversion("C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\");
 	isParsed = in_conversion(path);
 	
-	for (int i = 0; i < student_list.size(); i++)
-		student_list[i]->print_student();
+	if (isParsed)
+		for (int i = 0; i < student_list.size(); i++)
+			student_list[i]->print_student();
 	
 	return 0;
 }
@@ -93,40 +94,38 @@ bool in_conversion(const char* path)
 
 	for (int i = 0; code[i] != '\0'; i++)
 	{
-		//while (code[i] != '\n')
-		//{
-			// year
-			int year = 2000 + (code[i] - '0') * 10 + (code[i + 1] - '0');
-			i += 2;
-			
-			// Major, minor
-			int major = 0; int minor = 0;
-			char x = code[i]; char y = code[i + 1];
-			major = check_track(x, y);
-			i += 2;
-	
+
+		// year
+		int year = 2000 + (code[i] - '0') * 10 + (code[i + 1] - '0');
+		i += 2;
+		
+		// Major, minor
+		int major = 0; int minor = 0;
+		char x = code[i]; char y = code[i + 1];
+		major = check_track(x, y);
+		i += 2;			
+		x = code[i]; y = code[i + 1];
+		minor = check_track(x, y);
+		i += 2;
+
+		Student* S = new Student(s_id, year, major, minor);
+
+		// add courses with track and number
+		while (code[i] != '\n')
+		{
+			int track, num;
 			x = code[i]; y = code[i + 1];
-			minor = check_track(x, y);
+			track = check_track(x, y);
 			i += 2;
+			x = code[i]; y = code[i + 1];
+			num = (x - '0') * 10 + (y - '0');
+			i += 2;
+			S->push_course(track, num);
+		}
 
-			Student* S = new Student(s_id, year, major, minor);
+		student_list.push_back(S);
+		s_id++;
 
-			// add courses with track and number
-			while (code[i] != '\n')
-			{
-				int track, num;
-				x = code[i]; y = code[i + 1];
-				track = check_track(x, y);
-				i += 2;
-				x = code[i]; y = code[i + 1];
-				num = (x - '0') * 10 + (y - '0');
-				i += 2;
-				S->push_course(track, num);
-			}
-
-			student_list.push_back(S);
-			s_id++;
-		//}
 
 	}
 
