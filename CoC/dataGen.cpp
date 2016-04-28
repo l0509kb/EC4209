@@ -13,9 +13,9 @@
 
 using namespace std;
 
-int main(void){
-	srand(time(NULL));
-
-	/* group 1 */
-	return 0;
-}
+//int main(void){
+//	srand(time(NULL));
+//
+//	/* group 1 */
+//	return 0;
+//}
