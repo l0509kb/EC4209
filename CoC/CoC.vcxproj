@@ -66,9 +66,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dataGen.cpp" />
-    <ClCompile Include="hello.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Course.h" />
     <ClInclude Include="Student.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

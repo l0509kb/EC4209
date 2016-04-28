@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <bitset>
 
 #include "Student.h"
 
@@ -10,24 +11,23 @@ using namespace std;
 
 // variables
 bool isParsed = false;
-vector<Student> student_list;
+vector<Student*> student_list;
 
 // function prototypes
-bool inputConversion(const char* path);
-
-
+bool in_conversion(const char* path);
+int check_track(char x, char y);
 
 int main()
 {
 	// Parsing
-	isParsed = inputConversion("C:\\Users\\USER\\Desktop\\2016_1\\AI\\project\\");
+	isParsed = in_conversion("C:\\Users\\USER\\Desktop\\2016_1\\AI\\project\\");
 	for (int i = 0; i < student_list.size(); i++)
-		printf("ID: %02i Year: %04i\n", student_list[i].id, student_list[i].year);
+		student_list[i]->print_student();
 	
 	return 0;
 }
 
-bool inputConversion(const char* path)
+bool in_conversion(const char* path)
 {
 	int id, year, unit;
 	char* major; char* minor;
@@ -88,11 +88,34 @@ bool inputConversion(const char* path)
 	{
 		while (code[i] != '\n')
 		{
+			// year
 			int year = 2000 + (code[i] - '0') * 10 + (code[i + 1] - '0');
 			i += 2;
+			
+			// Major, minor
+			int major = 0; int minor = 0;
+			char x = code[i]; char y = code[i + 1];
+			major = check_track(x, y);
+			i += 2;
+			x = code[i]; y = code[i + 1];
+			minor = check_track(x, y);
+			i += 2;
+
+			Student* S = new Student(s_id, year, major, minor);
+
+			// add courses with track and number
 			while (code[i] != '\n')
-				i++;
-			Student S(s_id, year);
+			{
+				int track, num;
+				x = code[i]; y = code[i + 1];
+				track = check_track(x, y);
+				i += 2;
+				x = code[i]; y = code[i + 1];
+				num = (x - '0') * 10 + (y - '0');
+				i += 2;
+				S->push_course(track, num);
+			}
+
 			student_list.push_back(S);
 			s_id++;
 		}
@@ -100,4 +123,30 @@ bool inputConversion(const char* path)
 	}
 
 	return true;
+}
+
+int check_track(char x, char y)
+{
+	if ((x == 'N') || (x == 'g'))
+		return 1;
+	else if (x == 'b')
+		return 2;
+	else if (x == 'c')
+	{
+		if (y == 'h')
+			return 3;
+		else
+			return 4;
+	}
+	else if (x == 'e')
+		return 5;
+	else if (x == 'm')
+	{
+		if (y == 'a')
+			return 6;
+		else
+			return 7;
+	}
+	else
+		return 8;
 }
