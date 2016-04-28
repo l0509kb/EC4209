@@ -19,8 +19,15 @@ int check_track(char x, char y);
 
 int main()
 {
+	char* path = new char[100];
+	cout << "Enter the directory path to the Git Project: " << endl;
+	cout << "(Example) C:\\\\Users\\\\USER\\\\Documents\\\\GitHub\\\\EC4209\\\\CoC\\\\" << endl;
+	cin.getline(path, 100);
+
 	// Parsing
-	isParsed = in_conversion("C:\\Users\\USER\\Desktop\\2016_1\\AI\\project\\");
+	//isParsed = in_conversion("C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC");
+	isParsed = in_conversion(path);
+	
 	for (int i = 0; i < student_list.size(); i++)
 		student_list[i]->print_student();
 	
@@ -39,7 +46,7 @@ bool in_conversion(const char* path)
 	output.open(s + "output.txt");
 
 	// read in test.txt
-	string p = s + "test2.txt";
+	string p = s + "test3.txt";
 	FILE* file = fopen(p.c_str(), "r");
 	int c;
 
@@ -86,8 +93,8 @@ bool in_conversion(const char* path)
 
 	for (int i = 0; code[i] != '\0'; i++)
 	{
-		while (code[i] != '\n')
-		{
+		//while (code[i] != '\n')
+		//{
 			// year
 			int year = 2000 + (code[i] - '0') * 10 + (code[i + 1] - '0');
 			i += 2;
@@ -97,6 +104,7 @@ bool in_conversion(const char* path)
 			char x = code[i]; char y = code[i + 1];
 			major = check_track(x, y);
 			i += 2;
+	
 			x = code[i]; y = code[i + 1];
 			minor = check_track(x, y);
 			i += 2;
@@ -118,7 +126,7 @@ bool in_conversion(const char* path)
 
 			student_list.push_back(S);
 			s_id++;
-		}
+		//}
 
 	}
 

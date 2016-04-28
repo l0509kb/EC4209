@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include "Course.h"
 
@@ -58,56 +59,56 @@ public:
 		switch (major)
 		{
 		case 1:
-			printf(" Mj: gs");
+			printf(" ( GS");
 			break;
 		case 2:
-			printf(" Mj: bi");
+			printf(" ( BI");
 			break;
 		case 3:
-			printf(" Mj: ch");
+			printf(" ( CH");
 			break;
 		case 4:
-			printf(" Mj: cs");
+			printf(" ( CS");
 			break;
 		case 5:
-			printf(" Mj: ev");
+			printf(" ( EV");
 			break;
 		case 6:
-			printf(" Mj: ma");
+			printf(" ( MA");
 			break;
 		case 7:
-			printf(" Mj: me");
+			printf(" ( ME");
 			break;
 		case 8:
-			printf(" Mj: ph");
+			printf(" ( PH");
 			break;
 		}
 
 		switch (minor)
 		{
 		case 1:
-			printf(" mn: NA\n");
+			printf(" , NA )\n");
 			break;
 		case 2:
-			printf(" mn: bi\n");
+			printf(" , bi )\n");
 			break;
 		case 3:
-			printf(" mn: ch\n");
+			printf(" , ch )\n");
 			break;
 		case 4:
-			printf(" mn: cs\n");
+			printf(" , cs )\n");
 			break;
 		case 5:
-			printf(" mn: ev\n");
+			printf(" , ev )\n");
 			break;
 		case 6:
-			printf(" mn: ma\n");
+			printf(" , ma )\n");
 			break;
 		case 7:
-			printf(" mn: me\n");
+			printf(" , me )\n");
 			break;
 		case 8:
-			printf(" mn: ph\n");
+			printf(" , ph )\n");
 			break;
 		}
 
