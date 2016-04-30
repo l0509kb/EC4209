@@ -28,7 +28,7 @@ int main()
 	cin.getline(path, 100);
 	isParsed = in_conversion(path);
 
-	// (ii) 귀찮으면 이 부분을 수정하도록. 각자 자신의 파일경로를 추가하셈. 
+	// (ii) 귀찮으면 이 부분을 uncomment하고 위에 것을 comment out. 각자 자신의 파일경로를 추가하셈. 
 	// 뭔가 자신의 컴퓨터와 상관없이 이 프로젝트가 있는 폴더 안에서 실행하는 방법이 있긴 한데 그게 Resource Files를 쓰는 방법인데 난 복잡해서 못 하겟음
 	//isParsed = in_conversion("C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\");// 서영이의 경로다
 	//isParsed = in_conversion("어쩌고\\저쩌고\\");// 홍길동의 경로다
