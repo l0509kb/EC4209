@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Course.h"
+#include "RCourse.h"
 
 using namespace std;
 
@@ -15,6 +15,7 @@ public:
 		minor = _min;
 	}
 
+	// print registered course list
 	void print_course_list()
 	{
 		for (int i = 0; i < course_list.size(); i++)
@@ -52,6 +53,7 @@ public:
 		printf("\n\n");
 	}
 
+	// print student information
 	void print_student()
 	{
 		printf("ID: %02i Year: %04i", id, year);
@@ -115,16 +117,21 @@ public:
 		print_course_list();
 	}
 
+	// register a course
 	void push_course(int track, int num)
 	{
-		Course* c = new Course(track, num);
+		RCourse* c = new RCourse(track, num);
 		course_list.push_back(c);
 	}
 
-
+	// get student ID
+	int get_id()
+	{
+		return id;
+	}
 
 private:
-	vector<Course*> course_list;
+	vector<RCourse*> course_list;
 	// unit needs to be included
 	int id, year;
 	int major; int minor;

@@ -6,12 +6,14 @@
 #include <bitset>
 
 #include "Student.h"
+#include "Course.h"
 
 using namespace std;
 
 // variables
 bool isParsed = false;
 vector<Student*> student_list;
+vector<Course*> course_list;
 
 // function prototypes
 bool in_conversion(const char* path);
@@ -19,18 +21,26 @@ int check_track(char x, char y);
 
 int main()
 {
+	// (i) 매번 실행할 때마다 파일 경로를 넣고 싶으면 이걸 쓰셈
 	char* path = new char[100];
 	cout << "Enter the directory path to the Git Project: " << endl;
 	cout << "(Example) C:\\\\Users\\\\USER\\\\Documents\\\\GitHub\\\\EC4209\\\\CoC\\\\" << endl;
 	cin.getline(path, 100);
-
-	// Parsing
-	//isParsed = in_conversion("C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\");
 	isParsed = in_conversion(path);
+
+	// (ii) 귀찮으면 이 부분을 수정하도록. 각자 자신의 파일경로를 추가하셈. 
+	// 뭔가 자신의 컴퓨터와 상관없이 이 프로젝트가 있는 폴더 안에서 실행하는 방법이 있긴 한데 그게 Resource Files를 쓰는 방법인데 난 복잡해서 못 하겟음
+	//isParsed = in_conversion("C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\");// 서영이의 경로다
+	//isParsed = in_conversion("어쩌고\\저쩌고\\");// 홍길동의 경로다
+
 	
 	if (isParsed)
+	{
 		for (int i = 0; i < student_list.size(); i++)
 			student_list[i]->print_student();
+		for (int j = 0; j < course_list.size(); j++)
+			course_list[j]->print_reg_students();
+	}
 	
 	return 0;
 }
@@ -91,6 +101,7 @@ bool in_conversion(const char* path)
 	fclose(file2);
 
 	int s_id = 1;
+	bool first = true;
 
 	for (int i = 0; code[i] != '\0'; i++)
 	{
@@ -120,13 +131,42 @@ bool in_conversion(const char* path)
 			x = code[i]; y = code[i + 1];
 			num = (x - '0') * 10 + (y - '0');
 			i += 2;
-			S->push_course(track, num);
-		}
+			//S->push_course(track, num);
+			
+			if (first)
+			{
+				Course* C = new Course(track, num);
+				course_list.push_back(C);
+				C->push_student(S);
+				S->push_course(track, num);
+				first = false;
+			}
+			else
+			{
+				// find if the course is already in course_list
+				bool exist = false;
+				for (int j = 0; j < course_list.size(); j++)
+				{
+					if ((course_list[j]->get_num() == num) && (course_list[j]->get_track() == track))
+					{
+						course_list[j]->push_student(S);
+						S->push_course(track, num);
+						exist = true;
+						break;
+					}
+				}
 
+				if (!exist)
+				{
+					Course* C = new Course(track, num);
+					course_list.push_back(C);
+					C->push_student(S);
+					S->push_course(track, num);
+				}
+			}
+		}
 		student_list.push_back(S);
 		s_id++;
-
-
 	}
 
 	return true;
