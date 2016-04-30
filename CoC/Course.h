@@ -16,26 +16,33 @@ public:
 
 	// get course track
 	int get_track(){ return track; }
+
 	// get course num
 	int get_num(){ return num; }
 
-	// register a student
-	void push_student(Student* S)
+	// get pointer to the student list
+	vector<Student*>* get_ptr_student_list()
+	{
+		return &student_list;
+	}
+
+	// enroll a student
+	void enroll_student(Student* S)
 	{
 		student_list.push_back(S);
 	}
 
-	// print the registered students by their ID
-	void print_reg_students()
+	// print the enrolled students by their ID
+	void print_student_list()
 	{
-		print_course_name();
+		print_course_info();
 		for (int i = 0; i < (int)student_list.size(); i++)
 			cout << student_list[i]->get_id() << " ";
 		cout << endl << endl;
 	}
 
 	// print the course name = track + numb
-	void print_course_name()
+	void print_course_info()
 	{
 		switch (track)
 		{
@@ -68,7 +75,10 @@ public:
 	}
 
 private:
+	// track: gs == 1 ch == 2 cs == 3 ... ph == 8
 	int track;
 	int num;
+
+	// list of enrolled students
 	vector<Student*> student_list;
 };

@@ -54,7 +54,7 @@ public:
 	}
 
 	// print student information
-	void print_student()
+	void print_student_info()
 	{
 		printf("ID: %02i Year: %04i", id, year);
 		
@@ -118,7 +118,7 @@ public:
 	}
 
 	// register a course
-	void push_course(int track, int num)
+	void register_course(int track, int num)
 	{
 		RCourse* c = new RCourse(track, num);
 		course_list.push_back(c);
