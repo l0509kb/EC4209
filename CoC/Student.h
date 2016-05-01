@@ -15,6 +15,11 @@ public:
 		minor = _min;
 	}
 
+	vector<RCourse*> get_course_list()
+	{
+		return course_list; 
+	}
+
 	// print registered course list
 	void print_course_list()
 	{

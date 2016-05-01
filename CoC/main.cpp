@@ -7,6 +7,7 @@
 
 #include "Student.h"
 #include "Course.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -18,6 +19,7 @@ vector<Course*> course_list;
 // function prototypes
 bool in_conversion(const char* path);
 int check_track(char x, char y);
+Graph* build_graph(vector<Student*> student_list);
 
 int main()
 {
@@ -45,7 +47,7 @@ int main()
 	// 규빈아 이런식으로 하면 116번째 과목의 출석부의 0번째 학생의 ID를 쓸 수 있음
 	// 더 필요한 member function은 알아서 추가하렴
 	cout << course_list[116]->get_ptr_student_list()->at(0)->get_id();
-	
+
 	return 0;
 }
 
@@ -200,4 +202,16 @@ int check_track(char x, char y)
 	}
 	else
 		return 8;
+}
+
+Graph* build_graph(vector<Student*> student_list)
+{
+
+}
+
+float compute_correlation(Course* cour_i, Course* cour_j)
+{
+	float correlation;
+	/* to be implemented */
+	
 }

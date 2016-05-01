@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Course.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="RCourse.h" />
     <ClInclude Include="Student.h" />
   </ItemGroup>
