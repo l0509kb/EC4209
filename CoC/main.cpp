@@ -20,6 +20,7 @@ vector<Course*> course_list;
 bool in_conversion(const char* path);
 int check_track(char x, char y);
 Graph* build_graph(vector<Student*> student_list);
+void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j);
 
 int main()
 {
@@ -204,14 +205,47 @@ int check_track(char x, char y)
 		return 8;
 }
 
-Graph* build_graph(vector<Student*> student_list)
+Graph* build_graph(vector<Course*> course_list)
 {
+	Graph* G;
+	for (int i = 0; i < course_list.size(); i++)
+	{
+		// add index (node)
+		G->add_index(course_list[i]);
 
+		// add 
+		for (int j = 0; j <= i; j++)
+			compute_correlation(G, i, j, course_list[i], course_list[j]);
+			//G->set_correlation(course_list[i], course_list[j], \
+				compute_correlation(i, j, course_list[i], course_list[j]));
+	}
 }
 
-float compute_correlation(Course* cour_i, Course* cour_j)
+void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j)
 {
-	float correlation;
-	/* to be implemented */
-	
+	float correlation = 0;
+
+	if (index_i == index_j)
+	{
+		G->set_correlation(cour_i, cour_j, correlation);
+		return;
+	}
+
+	vector<Student*>* stud_i;
+	vector<Student*>* stud_j;
+
+	stud_i = cour_i->get_ptr_student_list();
+	stud_j = cour_j->get_ptr_student_list();
+
+	int intersection;
+
+	for (int s1 = 0; s1 < stud_i->size(); s1++)
+		for (int s2 = 0; s2 < stud_j->size(); s2++)
+			if (stud_i[s1] == stud_j[s2])
+				intersection++;
+
+	/* simplest model */
+	G->set_correlation(cour_i, cour_j, (float)intersection / stud_i->size());
+	G->set_correlation(cour_j, cour_i, (float)intersection / stud_j->size());
+
 }

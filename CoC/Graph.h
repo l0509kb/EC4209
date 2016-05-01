@@ -34,7 +34,11 @@ public:
 
 	// return TRUE if nodes have an edge, FALSE if not
 	bool is_edge(Course* i, Course* j) {
-		
+		int cor = get_correlation(i, j);
+		if (cor >= 0)
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 	// get the correlation of two courses,
@@ -67,7 +71,7 @@ public:
 		assert(i < num_courses);
 	}
 
-	void set_index(Course* c) {	index.push_back(c);	}
+	void add_index(Course* c) { index.push_back(c); num_courses++; }
 
 	int get_size() { return num_courses; }
 	void print_graph() {
