@@ -19,9 +19,20 @@ using namespace std;
 
 class Graph{
 public:
-	Graph(int n = 0) {
+	Graph(Graph* to_copy = NULL, int n = 0) {
 		assert(n >= 0);
 		num_courses = n;
+		
+		if (to_copy)
+		{
+			num_courses = to_copy->get_size();
+			index = to_copy->index;
+			p = to_copy->p;
+			/*for (int i = 0; i < num_courses; i++)
+			{
+				index.push_back(to_copy->in)
+			}*/
+		}
 		
 	}
 
@@ -111,11 +122,12 @@ public:
 		int x;
 		//cin >> x;
 	}
-	void file_print_graph(const char* path) {
+	void file_print_graph(const char* path, const char* file_name) {
 		// creating output.txt
 		ofstream output;
 		string s = path;
-		output.open(s + "graph_output.txt");
+		string name = file_name;
+		output.open(s + name);
 
 		for (int i = 0; i < p.size(); i++) {
 			for (int j = 0; j < p.at(i).size(); j++)

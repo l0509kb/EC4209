@@ -15,13 +15,15 @@ using namespace std;
 bool isParsed = false;
 vector<Student*> student_list;
 vector<Course*> course_list;
-Graph* G;
+Graph* multi_graph;
+Graph* simple_graph;
 
 // function prototypes
 bool in_conversion(const char* path);
 int check_track(char x, char y);
-Graph* build_graph(vector<Course*> course_list);
+Graph* build_multi_graph(void);
 void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j);
+Graph* build_simple_graph(void);
 
 int main()
 {
@@ -59,12 +61,23 @@ int main()
 	/*for (int j = 0; j < 3; j++)
 		course_list[j]->print_student_list();*/
 
+	/* Build Multi Graph
+	 *  builds a directed graph
+	 *  with bidirectional correlation coefficients
+	 */
 	vector<Course*> course_list_test = \
 		{course_list[0], course_list[1], course_list[2]};
 	//G = build_graph(course_list);
-	G = build_graph(course_list);
+	multi_graph = build_multi_graph();
 	/* graph print test */
-	G->file_print_graph(home_dir);
+	multi_graph->file_print_graph(home_dir, "directed_graph.txt");
+
+	/* Build Simple Graph
+	 *  conversion from the bidirectional graph to a simple weighted graph
+	 *  need specific models to merge the correlation coefficients
+	 */
+	simple_graph = build_simple_graph();
+	simple_graph->file_print_graph(home_dir, "simple_graph.txt");
 
 	return 0;
 }
@@ -222,7 +235,7 @@ int check_track(char x, char y)
 		return 8;
 }
 
-Graph* build_graph(vector<Course*> course_list)
+Graph* build_multi_graph(void)
 {
 	Graph* G = new Graph();
 	for (int i = 0; i < course_list.size(); i++)
@@ -254,7 +267,6 @@ void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Cou
 	if (index_i == index_j)
 	{
 		G->set_correlation(cour_i, cour_j, correlation);
-		//G->print_graph();
 		return;
 	}
 
@@ -276,15 +288,37 @@ void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Cou
 	{
 		G->set_correlation(cour_i, cour_j, -neg_inf);
 		G->set_correlation(cour_j, cour_i, -neg_inf);
-		//G->print_graph();
 		return;
 	}
 
-	/* simplest model */
 	float i_to_j = (float)intersection / stud_i->size();
 	float j_to_i = (float)intersection / stud_j->size();
-	//cout << "i_to_j: " << i_to_j << "\tj_to_i: " << j_to_i << endl;
+
 	G->set_correlation(cour_i, cour_j, i_to_j);
 	G->set_correlation(cour_j, cour_i, j_to_i);
-	//G->print_graph();
+}
+
+Graph* build_simple_graph(void)
+{
+	Graph* simple_graph = new Graph(multi_graph);
+	for (int i = 0; i < course_list.size(); i++)
+	{
+		for (int j = i + 1; j < course_list.size(); j++)
+		{
+			Course* cour_i = course_list[i];
+			Course* cour_j = course_list[j];
+
+			float corr_ij = simple_graph->get_correlation(cour_i, cour_j);
+			float corr_ji = simple_graph->get_correlation(cour_j, cour_i);
+			
+			/* simplest model that adds up two weights */
+			float new_corr = corr_ij + corr_ji;
+
+			simple_graph->modify_correlation(cour_i, cour_j, new_corr);
+			simple_graph->modify_correlation(cour_j, cour_i, new_corr);
+		}
+	}
+
+
+	return simple_graph;
 }
