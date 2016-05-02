@@ -12,14 +12,14 @@
 using namespace std;
 
 // variables
-bool isParsed = false;
+bool is_parsed = false;
 vector<Student*> student_list;
 vector<Course*> course_list;
 Graph* multi_graph;
 Graph* simple_graph;
 
 // function prototypes
-bool in_conversion(const char* path);
+bool in_conversion(char* path);
 int check_track(char x, char y);
 Graph* build_multi_graph(void);
 void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j);
@@ -27,33 +27,52 @@ Graph* build_simple_graph(void);
 
 int main()
 {
+	/*
 	// (i) 매번 실행할 때마다 파일 경로를 넣고 싶으면 이걸 쓰셈
-	//char* path = new char[100];
-	//cout << "Enter the directory path to the Git Project: " << endl;
-	//cout << "(Example) C:\\\\Users\\\\USER\\\\Documents\\\\GitHub\\\\EC4209\\\\CoC\\\\" << endl;
-	//cin.getline(path, 100);
-	//isParsed = in_conversion(path);
+	char* path = new char[100];
+	cout << "Enter the directory path to the Git Project: " << endl;
+	cout << "(Example) C:\\\\Users\\\\USER\\\\Documents\\\\GitHub\\\\EC4209\\\\CoC\\\\" << endl;
+	cin.getline(path, 100);
+	is_parsed = in_conversion(path);
+	*/
 
-	// (ii) 귀찮으면 이 부분을 쓰도록. 각자 자신의 파일경로를 추가하셈. 
-	// 뭔가 자신의 컴퓨터와 상관없이 이 프로젝트가 있는 폴더 안에서 실행하는 방법이 있긴 한데 그게 Resource Files를 쓰는 방법인데 난 복잡해서 못 하겟음
-	const char* home_dir = "C:\\Users\\cvlab2243\\Source\\Repos\\EC4209\\CoC\\"; // cvlab 경로
-	// const char* home_dir = "C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\"; // 서영이의 경로다
-	// const char* home_dir = "어쩌고\\저쩌고\\"; // 홍길동의 경로. 각자 경로 한 줄 추가해주면 됨
-	isParsed = in_conversion(home_dir);
+	// Add your own home directory
+	int user_id;
+	char* home_dir = " ";
+	cout << "Giyeon[1] Sunwoo_lab[2] Kyubin[3] Seoyoung_room[4] Seoyoung_lab[5]" << endl << "Enter user number:";
+	cin >> user_id;
 
+	switch (user_id)
+	{
+	case 1:
+		cout << "Not defined yet" << endl;
+		exit;
+		break;
+	case 2:
+		home_dir = "C:\\Users\\cvlab2243\\Source\\Repos\\EC4209\\CoC\\";
+		break;
+	case 3:
+		cout << "Not defined yet" << endl;
+		exit;
+		break;
+	case 4:
+		home_dir = "C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\";
+		break;
+	case 5:
+		home_dir = "C:\\Users\\June\\Documents\\GitHub\\EC4209\\CoC\\";
+		break;
+	}
+
+	is_parsed = in_conversion(home_dir);
 
 	// result print out on console
-	if (isParsed)
+	if (is_parsed)
 	{
 		for (int i = 0; i < student_list.size(); i++)
 			student_list[i]->print_student_info();
 		for (int j = 0; j < course_list.size(); j++)
 			course_list[j]->print_student_list();
 	}
-	
-	// 규빈아 이런식으로 하면 116번째 과목의 출석부의 0번째 학생의 ID를 쓸 수 있음
-	// 더 필요한 member function은 알아서 추가하렴
-	cout << course_list[116]->get_ptr_student_list()->at(0)->get_id();
 
 	/* simple course list test */
 	/*for (int i = 0; i < 3; i++)
@@ -82,7 +101,7 @@ int main()
 	return 0;
 }
 
-bool in_conversion(const char* path)
+bool in_conversion(char* path)
 {
 	int id, year, unit;
 	char* major; char* minor;
@@ -168,7 +187,6 @@ bool in_conversion(const char* path)
 			x = code[i]; y = code[i + 1];
 			num = (x - '0') * 10 + (y - '0');
 			i += 2;
-			//S->push_course(track, num);
 			
 			if (first)
 			{
