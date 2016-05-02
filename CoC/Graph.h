@@ -111,6 +111,7 @@ public:
 	}
 
 	int get_size() { return num_courses; }
+
 	void print_graph() {
 		//printf("size_i: %d\nsize_j: %d\n", p.size(), p.at(0).size());
 		for (int i = 0; i < p.size(); i++) {
@@ -135,6 +136,15 @@ public:
 			output << endl;
 		}
 		output << endl;
+	}
+
+	// get linear addition of the two correlations
+	float get_correlation_addition(Course* i, Course* j)
+	{
+		float i_j = get_correlation(i, j);
+		float j_i = get_correlation(j, i);
+
+		return i_j + j_i;
 	}
 
 private:

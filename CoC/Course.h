@@ -74,6 +74,51 @@ public:
 		printf("\n");
 	}
 
+	char* get_course_name()
+	{
+		char* name = new char[4];
+		switch (track)
+		{
+		case 1:
+			name[0] = 'g';
+			name[1] = 's';
+			break;
+		case 2:
+			name[0] = 'b';
+			name[1] = 'i';
+			break;
+		case 3:
+			name[0] = 'c';
+			name[1] = 'h';
+			break;
+		case 4:
+			name[0] = 'c';
+			name[1] = 's';
+			break;
+		case 5:
+			name[0] = 'e';
+			name[1] = 'v';
+			break;
+		case 6:
+			name[0] = 'm';
+			name[1] = 'a';
+			break;
+		case 7:
+			name[0] = 'm';
+			name[1] = 'e';
+			break;
+		case 8:
+			name[0] = 'p';
+			name[1] = 'h';
+			break;
+		}
+
+		name[2] = (num / 10) + '0';
+		name[3] = num % 10 + '0';
+
+		return name;
+	}
+
 private:
 	// track: gs == 1 ch == 2 cs == 3 ... ph == 8
 	int track;
