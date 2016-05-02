@@ -39,7 +39,7 @@ int main()
 	// Add your own home directory
 	int user_id;
 	char* home_dir = " ";
-	cout << "Giyeon[1] Sunwoo_lab[2] Kyubin[3] Seoyoung_room[4] Seoyoung_lab[5]" << endl << "Enter user number:";
+	cout << "Giyeon[1] Sunwoo_lab[2] Kyubihn[3] Seoyoung_room[4] Seoyoung_lab[5]" << endl << "Enter user number:";
 	cin >> user_id;
 
 	switch (user_id)
@@ -52,8 +52,7 @@ int main()
 		home_dir = "C:\\Users\\cvlab2243\\Source\\Repos\\EC4209\\CoC\\";
 		break;
 	case 3:
-		cout << "Not defined yet" << endl;
-		exit;
+		home_dir = "C:\\Users\\±Ôºó\\Documents\\EC4209-ClashOfClass\\EC4209-ClashOfClass\\CoC\\";
 		break;
 	case 4:
 		home_dir = "C:\\Users\\USER\\Documents\\GitHub\\EC4209\\CoC\\";
