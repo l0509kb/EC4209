@@ -437,23 +437,16 @@ void display()
 	{
 		for (int y = 0; y < course_list.size(); y++)
 		{
-			if ((multi_graph->get_correlation_addition(course_list[x], course_list[y]) >= threshold) && multi_graph->get_correlation_addition(course_list[x], course_list[y]) < 10)
+			// when the range for the threshold is set, then the color of the edge can be changed proportionately
+			float weight = multi_graph->get_correlation_addition(course_list[x], course_list[y]);
+			if ((weight >= threshold) && (weight < 10))
 			{
-				glColor3f(0, 1, 0);
+				glColor3f(0, 0.3 * weight, 0.3 * weight);
 				glBegin(GL_LINE_STRIP);
-				glVertex3f(80 * cos(2 * PI / node_num * x), 80 * sin(2 * PI / node_num * x), 0);
-				glVertex3f(80 * cos(2 * PI / node_num * y), 80 * sin(2 * PI / node_num * y), 0);
+				glVertex3f(79 * cos(2 * PI / node_num * x), 79 * sin(2 * PI / node_num * x), 0);
+				glVertex3f(79 * cos(2 * PI / node_num * y), 79 * sin(2 * PI / node_num * y), 0);
 				glEnd();
 			}
-			//else
-			//{
-			//	glColor3f(1, 0, 0);
-			//	glBegin(GL_LINE_STRIP);
-			//	glVertex3f(80 * cos(2 * PI / node_num * x), 80 * sin(2 * PI / node_num * x), 0);
-			//	glVertex3f(80 * cos(2 * PI / node_num * y), 80 * sin(2 * PI / node_num * y), 0);
-			//	glEnd();
-			//}
-
 		}
 	}
 
@@ -475,10 +468,18 @@ void keyboard(unsigned char key, int x, int y)
 		rotate_angle += 1.0f;
 		r_pressed = true;
 		break;
-	case 't':
+	case 'p':
 		if (threshold <= 10)
 		{ 
 			threshold += 0.05f;
+			cout << "Current Threshold = " << threshold << endl;
+			break;
+		}
+		break;
+	case 'o':
+		if (threshold >= 0)
+		{
+			threshold -= 0.05f;
 			cout << "Current Threshold = " << threshold << endl;
 			break;
 		}
