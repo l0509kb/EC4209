@@ -471,7 +471,10 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	case 't':
 		if (threshold <= 10)
+		{ 
 			threshold += 0.05f;
+			cout << "Current Threshold = " << threshold << endl;
+		}
 		break;
 	}
 
