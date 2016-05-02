@@ -5,11 +5,25 @@
 #include <vector>
 #include <bitset>
 
+#include <math.h>
+#include <glut.h>
+#include <gl.h>
+#include <glu.h>
+
 #include "Student.h"
 #include "Course.h"
 #include "Graph.h"
 
+#define PI 3.1415926
+
 using namespace std;
+
+// graphical interface
+void display();
+void reshape(int w, int h);
+void keyboard(unsigned char key, int x, int y);
+float rotate_angle = 0.0f;
+float threshold = 0.0f;
 
 // variables
 bool is_parsed = false;
@@ -19,13 +33,13 @@ Graph* multi_graph;
 Graph* simple_graph;
 
 // function prototypes
-bool in_conversion(char* path);
+bool in_conversion(const char* path);
 int check_track(char x, char y);
 Graph* build_multi_graph(void);
 void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j);
 Graph* build_simple_graph(void);
 
-int main()
+int main(int argc, char** argv)
 {
 	/*
 	// (i) 매번 실행할 때마다 파일 경로를 넣고 싶으면 이걸 쓰셈
@@ -39,7 +53,7 @@ int main()
 	// Add your own home directory
 	int user_id;
 	char* home_dir = " ";
-	cout << "Giyeon[1] Sunwoo_lab[2] Kyubihn[3] Seoyoung_room[4] Seoyoung_lab[5]" << endl << "Enter user number:";
+	cout << "Giyeon[1] Sunwoo_lab[2] Kyubin[3] Seoyoung_room[4] Seoyoung_lab[5]" << endl << "Enter user number:";
 	cin >> user_id;
 
 	switch (user_id)
@@ -96,10 +110,20 @@ int main()
 	simple_graph = build_simple_graph();
 	simple_graph->file_print_graph(home_dir, "simple_graph.txt");
 
+	// graphical interface
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize(1000, 1000);
+	glutCreateWindow("Graph");
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+	glutKeyboardFunc(keyboard);
+	glutMainLoop();
+
 	return 0;
 }
 
-bool in_conversion(char* path)
+bool in_conversion(const char* path)
 {
 	int id, year, unit;
 	char* major; char* minor;
@@ -337,4 +361,119 @@ Graph* build_simple_graph(void)
 
 
 	return simple_graph;
+}
+
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	GLfloat size[2];
+	GLfloat angle;
+	glGetFloatv(GL_POINT_SIZE_RANGE, size);
+	glPointSize(size[0] * 6);
+
+	glRotatef(rotate_angle, 0.0, 0.0, 1.0);
+
+	int node_num = multi_graph->get_size();
+	char* c = new char[node_num];
+
+	int j = 0;
+	for (float angle = 0.0; angle <= 2.0 * PI; angle += 2 * PI / node_num)
+	{
+
+		if (j < course_list.size())
+		{
+			char* name = new char[4];
+			name = course_list[j]->get_course_name();
+			switch (course_list[j]->get_track())
+			{
+			case 1:
+				glColor3f(1.0, 0.498039, 0.0);
+				break;
+			case 2:
+				glColor3f(0.137255, 0.556863, 0.137255);
+				break;
+			case 3:
+				glColor3f(0.52, 0.39, 0.39);
+				break;
+			case 4:
+				glColor3f(0.196078, 0.8, 0.196078);
+				break;
+			case 5:
+				glColor3f(0.85, 0.85, 0.10);
+				break;
+			case 6:
+				glColor3f(0.498039, 0.53, 1.0);
+				break;
+			case 7:
+				glColor3f(1.00, 0.11, 0.68);
+				break;
+			case 8:
+				glColor3f(0.196078, 0.6, 0.8);
+				break;
+			}
+			j++;
+
+			glBegin(GL_POINTS);
+			glVertex3f(80 * cos(angle), 80 * sin(angle), 0.0);
+			glEnd();
+
+			glPushMatrix();
+			glTranslatef(81 * cos(angle), 81 * sin(angle), 0.0);
+			glRotatef(angle * 180 / PI, 0.0, 0.0, 1.0);
+			glScalef(0.02f, 0.02f, 1.f);
+			for (int i = 0; i < 4; i++)
+				glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, name[i]);
+			glPopMatrix();
+		}
+	}
+
+	for (int x = 0; x < course_list.size(); x++)
+	{
+		for (int y = 0; y < course_list.size(); y++)
+		{
+			if ((multi_graph->get_correlation_addition(course_list[x], course_list[y]) >= threshold) && multi_graph->get_correlation_addition(course_list[x], course_list[y]) < 10)
+			{
+				glColor3f(0, 1, 0);
+				glBegin(GL_LINE_STRIP);
+				glVertex3f(80 * cos(2 * PI / node_num * x), 80 * sin(2 * PI / node_num * x), 0);
+				glVertex3f(80 * cos(2 * PI / node_num * y), 80 * sin(2 * PI / node_num * y), 0);
+				glEnd();
+			}
+			//else
+			//{
+			//	glColor3f(1, 0, 0);
+			//	glBegin(GL_LINE_STRIP);
+			//	glVertex3f(80 * cos(2 * PI / node_num * x), 80 * sin(2 * PI / node_num * x), 0);
+			//	glVertex3f(80 * cos(2 * PI / node_num * y), 80 * sin(2 * PI / node_num * y), 0);
+			//	glEnd();
+			//}
+
+		}
+	}
+
+	glutSwapBuffers(); // this is only used for double buffers
+}
+
+void reshape(int w, int h)
+{
+	glLoadIdentity();
+	glViewport(0, 0, w, h);
+	gluOrtho2D(-100.0, 100.0, -100.0, 100.0);
+}
+
+void keyboard(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+	case 'r':
+		rotate_angle += 1.0f;
+		break;
+	case 't':
+		if (threshold <= 10)
+			threshold += 0.05f;
+		break;
+	}
+
+	glutPostRedisplay();
 }
