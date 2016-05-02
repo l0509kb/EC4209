@@ -23,6 +23,7 @@ void display();
 void reshape(int w, int h);
 void keyboard(unsigned char key, int x, int y);
 float rotate_angle = 0.0f;
+bool r_pressed = false;
 float threshold = 0.0f;
 
 // variables
@@ -372,7 +373,11 @@ void display()
 	glGetFloatv(GL_POINT_SIZE_RANGE, size);
 	glPointSize(size[0] * 6);
 
-	glRotatef(rotate_angle, 0.0, 0.0, 1.0);
+	if (r_pressed)
+	{
+		glRotatef(rotate_angle, 0.0, 0.0, 1.0);
+		r_pressed = false;
+	}
 
 	int node_num = multi_graph->get_size();
 	char* c = new char[node_num];
@@ -468,12 +473,14 @@ void keyboard(unsigned char key, int x, int y)
 	{
 	case 'r':
 		rotate_angle += 1.0f;
+		r_pressed = true;
 		break;
 	case 't':
 		if (threshold <= 10)
 		{ 
 			threshold += 0.05f;
 			cout << "Current Threshold = " << threshold << endl;
+			break;
 		}
 		break;
 	}
