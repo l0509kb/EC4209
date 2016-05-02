@@ -45,8 +45,7 @@ int main()
 	switch (user_id)
 	{
 	case 1:
-		cout << "Not defined yet" << endl;
-		exit;
+		home_dir = "C:\\Users\\user\\Documents\\GitHub\\EC4209\\CoC\\";
 		break;
 	case 2:
 		home_dir = "C:\\Users\\cvlab2243\\Source\\Repos\\EC4209\\CoC\\";
