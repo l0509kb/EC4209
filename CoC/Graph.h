@@ -40,9 +40,9 @@ public:
 	bool is_edge(Course* i, Course* j) {
 		int cor = get_correlation(i, j);
 		if (cor >= 0)
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 
 	// get the correlation of two courses,
