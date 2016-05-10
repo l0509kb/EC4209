@@ -96,9 +96,15 @@ int main(int argc, char** argv)
 	/*vector<Course*> toy_course_list;
 	toy_course_list.push_back(course_list[0]);
 	toy_course_list.push_back(course_list[1]);
+	toy_course_list.push_back(course_list[3]);
+	toy_course_list.push_back(course_list[29]);
+	toy_course_list.push_back(course_list[69]);
+	toy_course_list.push_back(course_list[39]);
+	toy_course_list.push_back(course_list[98]);
+
 	toy_course_list.push_back(course_list[100]);
-	toy_course_list.push_back(course_list[110]);
-*/
+	toy_course_list.push_back(course_list[110]);*/
+
 
 
 	/* Build Multi Graph
@@ -119,29 +125,11 @@ int main(int argc, char** argv)
 	simple_graph = build_simple_graph(multi_graph, course_list);
 	//simple_graph = build_simple_graph(multi_graph, toy_course_list);	
 
-	/* get_vertex_degree() test
-	 */
-	printf("[get_vertex_degree] %d\n", \
-		simple_graph->get_vertex_degree(course_list[0]));
-
-	/* set_vertex_weight() test
-	*/
-	simple_graph->set_vertex_weight(course_list[0], 1.433);
 	simple_graph->file_print_graph(home_dir, "simple_graph.txt");
-
-	/* get_vertex_weight() test
-	*/
-	printf("[get_vertex_weight] %f\n", \
-		simple_graph->get_vertex_weight(course_list[0]));
-
-	printf("0 and 2 connected? %d\n", \
-		is_connected(simple_graph, course_list[0], course_list[2]));
-	printf("0 and 100 connected? %d\n", \
-		is_connected(simple_graph, course_list[0], course_list[116]));
 
 	/*for (int p = 0; p < simple_graph->get_size(); p++)
 	{
-		for (int q = 0; q < simple_graph->get_size(); q++)
+		for (int q = p + 1; q < simple_graph->get_size(); q++)
 		{
 			if (!is_connected(simple_graph, course_list[p], course_list[q]))
 				printf("%d\t%d\n", p, q);

@@ -40,9 +40,6 @@ bool is_connected(Graph* G, Course* root, Course* dest)
 		for (i = 0; i < G->get_size(); i++)
 		{
 			tmp_crs = G->get_course(i);
-			// if dest found, return
-			/*if (tmp_crs->get_num() == dest->get_num() && \
-				tmp_crs->get_track() == dest->get_track())*/
 
 			/*printf("[is_conn] (big_for_%d) neighbor tmp_crs: %d%d\n", \
 				i, tmp_crs->get_track(), tmp_crs->get_num());
@@ -61,7 +58,7 @@ bool is_connected(Graph* G, Course* root, Course* dest)
 				return true;
 			}*/
 
-			// tmp_crs == neighbor
+			// if tmp_crs == neighbor
 			if (G->get_correlation(to_visit[first], tmp_crs) > 0)
 			{
 				if (tmp_crs == dest)
@@ -74,26 +71,22 @@ bool is_connected(Graph* G, Course* root, Course* dest)
 				// if tmp_crs not in visited list, push back to to_visit
 				for (j = 0; j < visited.size(); j++)
 				{
-					/*if (visited[j]->get_num() == tmp_crs->get_num() && \
-						visited[j]->get_track() == tmp_crs->get_track())*/
 					if (visited[j] == tmp_crs) {
 						not_visited = false;
 						break;
 					}
 				}
 
-				visited.push_back(tmp_crs);
-
 				/*for (int k = first; k < to_visit.size(); k++)
 					printf("to_visit: %d%d ", to_visit[k]->get_track(), to_visit[k]->get_num());
 				printf("\n");*/
 
-				if (not_visited)
+				if (not_visited) {
 					to_visit.push_back(tmp_crs);
+					visited.push_back(tmp_crs);
+				}
 			}
-			
 		}
-
 		first++;
 	}
 
