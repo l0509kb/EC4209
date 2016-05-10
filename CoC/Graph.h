@@ -165,6 +165,16 @@ public:
 		return degree;
 	}
 
+	float get_vertex_weight(Course* v)
+	{
+		return get_correlation(v, v);
+	}
+
+	void set_vertex_weight(Course* v, float correlation)
+	{
+		set_correlation(v, v, correlation);
+	}
+
 private:
 	int num_courses;
 	vector<Course*> index;

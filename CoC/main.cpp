@@ -39,6 +39,8 @@ int check_track(char x, char y);
 Graph* build_multi_graph(void);
 void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j);
 Graph* build_simple_graph(void);
+bool is_connected(Graph* G, Course* u, Course* v);
+
 
 int main(int argc, char** argv)
 {
@@ -106,8 +108,17 @@ int main(int argc, char** argv)
 
 	/* get_vertex_degree() test
 	 */
-	printf("[get_vertex_degree] Course: %d\n", \
+	printf("[get_vertex_degree] %d\n", \
 		simple_graph->get_vertex_degree(course_list[0]));
+
+	/* set_vertex_weight() test
+	*/
+	simple_graph->set_vertex_weight(course_list[0], 1.433);
+
+	/* get_vertex_weight() test
+	*/
+	printf("[get_vertex_weight] %f\n", \
+		simple_graph->get_vertex_weight(course_list[0]));
 
 	// graphical interface
 	glutInit(&argc, argv);
