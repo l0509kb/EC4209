@@ -27,6 +27,12 @@
     <ClCompile Include="is_connected.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="build_simple_graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="build_multi_graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Student.h">

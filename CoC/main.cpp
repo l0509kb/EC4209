@@ -36,9 +36,9 @@ Graph* simple_graph;
 // function prototypes
 bool in_conversion(const char* path);
 int check_track(char x, char y);
-Graph* build_multi_graph(void);
+Graph* build_multi_graph(vector<Course*> course_list);
 void compute_correlation(Graph* G, int index_i, int index_j, Course* cour_i, Course* cour_j);
-Graph* build_simple_graph(void);
+Graph* build_simple_graph(Graph* multi_graph, vector<Course*> course_list);
 bool is_connected(Graph* G, Course* u, Course* v);
 
 
@@ -89,12 +89,25 @@ int main(int argc, char** argv)
 			course_list[j]->print_student_list();
 	}
 
+	/* Toy graph example
+	 * with simple toy course list
+	 * used course list 0 to 4
+	 */
+	/*vector<Course*> toy_course_list;
+	toy_course_list.push_back(course_list[0]);
+	toy_course_list.push_back(course_list[1]);
+	toy_course_list.push_back(course_list[100]);
+	toy_course_list.push_back(course_list[110]);
+*/
+
+
 	/* Build Multi Graph
 	 *  builds a directed graph
 	 *  with bidirectional correlation coefficients
 	 */
+	multi_graph = build_multi_graph(course_list);
+	//multi_graph = build_multi_graph(toy_course_list);
 
-	multi_graph = build_multi_graph();
 
 	/* graph print test */
 	multi_graph->file_print_graph(home_dir, "directed_graph.txt");
@@ -103,8 +116,8 @@ int main(int argc, char** argv)
 	 *  conversion from the bidirectional graph to a simple weighted graph
 	 *  need specific models to merge the correlation coefficients
 	 */
-	simple_graph = build_simple_graph();
-	simple_graph->file_print_graph(home_dir, "simple_graph.txt");
+	simple_graph = build_simple_graph(multi_graph, course_list);
+	//simple_graph = build_simple_graph(multi_graph, toy_course_list);	
 
 	/* get_vertex_degree() test
 	 */
@@ -114,11 +127,26 @@ int main(int argc, char** argv)
 	/* set_vertex_weight() test
 	*/
 	simple_graph->set_vertex_weight(course_list[0], 1.433);
+	simple_graph->file_print_graph(home_dir, "simple_graph.txt");
 
 	/* get_vertex_weight() test
 	*/
 	printf("[get_vertex_weight] %f\n", \
 		simple_graph->get_vertex_weight(course_list[0]));
+
+	printf("0 and 2 connected? %d\n", \
+		is_connected(simple_graph, course_list[0], course_list[2]));
+	printf("0 and 100 connected? %d\n", \
+		is_connected(simple_graph, course_list[0], course_list[116]));
+
+	/*for (int p = 0; p < simple_graph->get_size(); p++)
+	{
+		for (int q = 0; q < simple_graph->get_size(); q++)
+		{
+			if (!is_connected(simple_graph, course_list[p], course_list[q]))
+				printf("%d\t%d\n", p, q);
+		}
+	}*/
 
 	// graphical interface
 	glutInit(&argc, argv);
@@ -131,57 +159,6 @@ int main(int argc, char** argv)
 	glutMainLoop();
 
 	return 0;
-}
-
-
-Graph* build_multi_graph(void)
-{
-	Graph* G = new Graph();
-	for (int i = 0; i < course_list.size(); i++)
-	{
-		// add index (node)
-		G->add_index(course_list[i]);
-
-		// add 
-		for (int j = i; j < course_list.size(); j++)
-		{
-			// add index if j is not found in index
-			if (i == 0 || i != j)
-				G->add_index(course_list[j]);
-			
-			compute_correlation(G, i, j, course_list[i], course_list[j]);
-			//G->set_correlation(course_list[i], course_list[j], \
-				compute_correlation(i, j, course_list[i], course_list[j]));
-			
-		}
-	}
-
-	return G;
-}
-
-Graph* build_simple_graph(void)
-{
-	Graph* simple_graph = new Graph(multi_graph);
-	for (int i = 0; i < course_list.size(); i++)
-	{
-		for (int j = i + 1; j < course_list.size(); j++)
-		{
-			Course* cour_i = course_list[i];
-			Course* cour_j = course_list[j];
-
-			float corr_ij = simple_graph->get_correlation(cour_i, cour_j);
-			float corr_ji = simple_graph->get_correlation(cour_j, cour_i);
-			
-			/* simplest model that adds up two weights */
-			float new_corr = corr_ij + corr_ji;
-
-			simple_graph->modify_correlation(cour_i, cour_j, new_corr);
-			simple_graph->modify_correlation(cour_j, cour_i, new_corr);
-		}
-	}
-
-
-	return simple_graph;
 }
 
 void display()

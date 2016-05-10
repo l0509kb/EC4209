@@ -100,6 +100,11 @@ public:
 		assert(i < num_courses);
 	}
 
+	Course* get_course(int ind)
+	{
+		return index[ind];
+	}
+
 	void add_index(Course* c) {
 		for (int i = 0; i < index.size(); i++)
 			if (index[i]->get_num() == c->get_num() && \

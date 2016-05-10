@@ -66,6 +66,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="build_multi_graph.cpp" />
+    <ClCompile Include="build_simple_graph.cpp" />
     <ClCompile Include="check_track.cpp" />
     <ClCompile Include="compute_correlation.cpp" />
     <ClCompile Include="is_connected.cpp" />
