@@ -87,20 +87,13 @@ int main(int argc, char** argv)
 			course_list[j]->print_student_list();
 	}
 
-	/* simple course list test */
-	/*for (int i = 0; i < 3; i++)
-		student_list[i]->print_student_info();*/
-	/*for (int j = 0; j < 3; j++)
-		course_list[j]->print_student_list();*/
-
 	/* Build Multi Graph
 	 *  builds a directed graph
 	 *  with bidirectional correlation coefficients
 	 */
-	vector<Course*> course_list_test = \
-		{course_list[0], course_list[1], course_list[2]};
-	//G = build_graph(course_list);
+
 	multi_graph = build_multi_graph();
+
 	/* graph print test */
 	multi_graph->file_print_graph(home_dir, "directed_graph.txt");
 
@@ -110,6 +103,11 @@ int main(int argc, char** argv)
 	 */
 	simple_graph = build_simple_graph();
 	simple_graph->file_print_graph(home_dir, "simple_graph.txt");
+
+	/* get_vertex_degree() test
+	 */
+	printf("[get_vertex_degree] Course: %d\n", \
+		simple_graph->get_vertex_degree(course_list[0]));
 
 	// graphical interface
 	glutInit(&argc, argv);

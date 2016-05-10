@@ -13,7 +13,7 @@
 #include "Course.h"
 
 // negative infinity (type float)
-const float neg_inf = -numeric_limits<float>::infinity();
+// const float neg_inf = -numeric_limits<float>::infinity();
 
 using namespace std;
 
@@ -63,7 +63,7 @@ public:
 		int index_j = get_index(j);
 		
 		// if index out of range, push_back
-		vector<float> to_push(index_j + 1, neg_inf);
+		vector<float> to_push(index_j + 1, -1);
 
 		// i(column to modify) greater than the size of matrix
 		if (index_i >= p.size() || index_i == 0)
@@ -145,6 +145,24 @@ public:
 		float j_i = get_correlation(j, i);
 
 		return i_j + j_i;
+	}
+
+	// returns the degree of a vertex
+	int get_vertex_degree(Course* v)
+	{
+		assert(v != NULL);
+		int degree = 0;
+		int index_v = get_index(v);
+
+		for (int i = 0; i < p.at(index_v).size(); i++)
+		{
+			if (i == index_v)
+				continue;
+			if (p.at(index_v).at(i) > 0)
+				degree++;
+		}
+
+		return degree;
 	}
 
 private:
