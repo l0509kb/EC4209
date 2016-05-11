@@ -128,6 +128,7 @@ public:
 		int x;
 		//cin >> x;
 	}
+
 	void file_print_graph(const char* path, const char* file_name) {
 		// creating output.txt
 		ofstream output;
@@ -141,15 +142,6 @@ public:
 			output << endl;
 		}
 		output << endl;
-	}
-
-	// get linear addition of the two correlations
-	float get_correlation_addition(Course* i, Course* j)
-	{
-		float i_j = get_correlation(i, j);
-		float j_i = get_correlation(j, i);
-
-		return i_j + j_i;
 	}
 
 	// returns the degree of a vertex
@@ -179,6 +171,53 @@ public:
 	{
 		set_correlation(v, v, correlation);
 	}
+
+	// get linear addition of the two correlations
+	float get_correlation_addition(Course* i, Course* j)
+	{
+		float i_j = get_correlation(i, j);
+		float j_i = get_correlation(j, i);
+
+		return i_j + j_i;
+	}
+
+	// get std, avg, min, and max of correlations
+	void get_correlation_stats(vector<Course*>* cptr)
+	{
+		float sum = 0, _min = 10, _max = 0, std = 0;
+		int num = 0;
+
+		for (int x = 0; x < num_courses; x++)
+		{
+			for (int y = 0; y < x; y++)
+			{
+				float weight = get_correlation_addition(cptr->at(x), cptr->at(y));
+
+				//cout << weight << endl;
+				// don't count the disconncted edges
+				if (weight >= 0)
+				{
+					sum += weight;
+					num++;
+					if (weight < _min)
+						_min = weight;
+					if (weight > _max)
+						_max = weight;
+				}
+				else
+					num++;
+			}
+		}
+
+		avg = sum / num;
+		min = _min;
+		max = _max;
+
+		cout << "Correlation Statistics" << endl << "avg: " << avg << " min: " << min << " Max: " << max << endl;
+	}
+	
+	// correlation statistics
+	float avg, min, max;
 
 private:
 	int num_courses;
