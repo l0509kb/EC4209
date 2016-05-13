@@ -587,26 +587,7 @@ bool in_conversion(const char* path)
 	}
 
 	// read in test.txt
-	string p = s + "list.txt";
-	FILE* file3 = fopen(p.c_str(), "r");
-	int c;
 
-	while ((c = fgetc(file3)) != EOF)
-	{
-		// characters that are neither delims nor separators
-		if (((char)c != ',') && ((char)c != '\t') && ((char)c != '\"') && ((char)c != ' '))
-		{
-			// unit
-			if ((char)c == '(')
-			{
-				c = fgetc(file); c = fgetc(file); c = fgetc(file);
-			}
-			else
-				output << (char)c;
-		}
-	}
-	output.close();
-	fclose(file3);
 
 	return true;
 }
