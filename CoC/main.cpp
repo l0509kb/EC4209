@@ -32,6 +32,7 @@ bool view = true;
 
 // variables
 bool is_parsed = false;
+bool is_ideal = true;
 vector<Student*> student_list;
 vector<Course*> course_list;
 Graph* multi_graph;
@@ -53,6 +54,14 @@ int main(int argc, char** argv)
 	char* home_dir = " ";
 	cout << "Giyeon[1] Sunwoo_lab[2] Kyubin[3] Seoyoung_room[4] Seoyoung_lab[5]" << endl << "Enter user number:";
 	cin >> user_id;
+
+	// Determine whether this is an ideal/real registration
+	char answer;
+	cout << "Is this an ideal case?" << endl << "i.e. class size * number of classes >= number of students" << endl << "Write y/n: ";
+	cin >> answer;
+
+	if (answer == 'n')
+		is_ideal = false;
 
 	switch (user_id)
 	{
