@@ -12,6 +12,12 @@ public:
 	{
 		track = _track;
 		num = _num;
+
+		// by default
+		popularity = 0;
+		availability = 0;
+		class_size = 0;
+		num_classes = 0;
 	}
 
 	// get course track
@@ -74,10 +80,113 @@ public:
 		printf("\n");
 	}
 
+	// get course name in array[4] e.g. gs24
+	char* get_course_name()
+	{
+		char* name = new char[4];
+		switch (track)
+		{
+		case 1:
+			name[0] = 'g';
+			name[1] = 's';
+			break;
+		case 2:
+			name[0] = 'b';
+			name[1] = 'i';
+			break;
+		case 3:
+			name[0] = 'c';
+			name[1] = 'h';
+			break;
+		case 4:
+			name[0] = 'c';
+			name[1] = 's';
+			break;
+		case 5:
+			name[0] = 'e';
+			name[1] = 'v';
+			break;
+		case 6:
+			name[0] = 'm';
+			name[1] = 'a';
+			break;
+		case 7:
+			name[0] = 'm';
+			name[1] = 'e';
+			break;
+		case 8:
+			name[0] = 'p';
+			name[1] = 'h';
+			break;
+		}
+
+		name[2] = (num / 10) + '0';
+		name[3] = num % 10 + '0';
+
+		return name;
+	}
+
+	// get the number of enrolled students
+	int get_num_enrolled_students()
+	{
+		return student_list.size();
+	}
+
+	// set course size, number of classes
+	void set_course_size(int _size, int _num, int num_total_students)
+	{
+		class_size = _size;
+		num_classes = _num;
+
+		float num_students = student_list.size();
+
+		// in an ideal case
+		if (_num == -1)
+		{
+			num_classes = ceil(num_students / class_size);
+			availability = 1;
+		}
+		else// number of classes are already set
+		{
+			num_classes = _num;
+			if ((int)num_students <= class_size * num_classes)
+				availability = 1;
+			else
+				availability = float(class_size * num_classes) / num_students;
+		}
+		
+		popularity = num_students / float(num_total_students);
+
+		//if (_num == -1)
+		//	cout << "[Ideal Case]" << endl;
+		//else
+		//	cout << "[Not an Ideal Case]" << endl;
+		//cout << "The number of registered students: " << num_students << endl;
+		//cout << "The size of the class: " << class_size << endl;
+		//cout << "The number of classes: " << num_classes << endl;
+		//cout << "The popularity of the course: " << popularity << endl;
+		//cout << "The availability of the course: " << availability << endl;
+	}
+
+	float get_popularity()
+	{
+		return popularity;
+	}
+
+	float get_availability()
+	{
+		return availability;
+	}
+
 private:
 	// track: gs == 1 ch == 2 cs == 3 ... ph == 8
 	int track;
 	int num;
+
+	float popularity;
+	float availability;
+	int class_size;// this is the size of one single class of the course
+	int num_classes;// this is the number of classes of the course
 
 	// list of enrolled students
 	vector<Student*> student_list;

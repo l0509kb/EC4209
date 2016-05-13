@@ -13,7 +13,7 @@
 #include "Course.h"
 
 // negative infinity (type float)
-const float neg_inf = -numeric_limits<float>::infinity();
+// const float neg_inf = -numeric_limits<float>::infinity();
 
 using namespace std;
 
@@ -40,9 +40,9 @@ public:
 	bool is_edge(Course* i, Course* j) {
 		int cor = get_correlation(i, j);
 		if (cor >= 0)
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 
 	// get the correlation of two courses,
@@ -63,7 +63,7 @@ public:
 		int index_j = get_index(j);
 		
 		// if index out of range, push_back
-		vector<float> to_push(index_j + 1, neg_inf);
+		vector<float> to_push(index_j + 1, -1);
 
 		// i(column to modify) greater than the size of matrix
 		if (index_i >= p.size() || index_i == 0)
@@ -100,6 +100,11 @@ public:
 		assert(i < num_courses);
 	}
 
+	Course* get_course(int ind)
+	{
+		return index[ind];
+	}
+
 	void add_index(Course* c) {
 		for (int i = 0; i < index.size(); i++)
 			if (index[i]->get_num() == c->get_num() && \
@@ -111,6 +116,7 @@ public:
 	}
 
 	int get_size() { return num_courses; }
+
 	void print_graph() {
 		//printf("size_i: %d\nsize_j: %d\n", p.size(), p.at(0).size());
 		for (int i = 0; i < p.size(); i++) {
@@ -122,6 +128,7 @@ public:
 		int x;
 		//cin >> x;
 	}
+
 	void file_print_graph(const char* path, const char* file_name) {
 		// creating output.txt
 		ofstream output;
@@ -136,6 +143,111 @@ public:
 		}
 		output << endl;
 	}
+
+	// returns the degree of a vertex
+	int get_vertex_degree(Course* v)
+	{
+		assert(v != NULL);
+		int degree = 0;
+		int index_v = get_index(v);
+
+		for (int i = 0; i < p.at(index_v).size(); i++)
+		{
+			if (i == index_v)
+				continue;
+			if (p.at(index_v).at(i) > 0)
+				degree++;
+		}
+
+		return degree;
+	}
+
+	float get_vertex_weight(Course* v)
+	{
+		return get_correlation(v, v);
+	}
+
+	void set_vertex_weight(Course* v, float correlation)
+	{
+		set_correlation(v, v, correlation);
+	}
+
+	// get linear addition of the two correlations
+	float get_correlation_addition(Course* i, Course* j)
+	{
+		float i_j = get_correlation(i, j);
+		float j_i = get_correlation(j, i);
+
+		return i_j + j_i;
+	}
+
+	// get std, avg, min, and max of correlations
+	void get_correlation_stats(vector<Course*>* cptr)
+	{
+		float sum = 0, _min = 10, _max = 0, std = 0;
+		int num = 0;
+
+		for (int x = 0; x < num_courses; x++)
+		{
+			for (int y = 0; y < x; y++)
+			{
+				float weight = get_correlation(cptr->at(x), cptr->at(y));
+				//float weight = get_correlation_addition(cptr->at(x), cptr->at(y));
+
+				// don't count the disconncted edges
+				if (weight >= 0)
+				{
+					sum += weight;
+					num++;
+					if (weight < _min)
+						_min = weight;
+					if (weight > _max)
+						_max = weight;
+				}
+				else
+					num++;
+			}
+		}
+
+		avg = sum / num;
+		min = _min;
+		max = _max;
+
+		cout << "Correlation Statistics" << endl << "avg: " << avg << " min: " << min << " Max: " << max << endl;
+	}
+	
+	// get maximum popularity
+	float get_max_popularity()
+	{
+		float max = 0;
+
+		for (int i = 0; i < num_courses; i++)
+		{
+			float _pop = get_course(i)->get_popularity();
+			if (max < _pop)
+				max = _pop;
+		}
+
+		return max;
+	}
+
+	// get maximum availability
+	float get_max_availability()
+	{
+		float max = 0;
+
+		for (int i = 0; i < num_courses; i++)
+		{
+			float _ava = get_course(i)->get_availability();
+			if (max < _ava)
+				max = _ava;
+		}
+
+		return max;
+	}
+
+	// correlation statistics
+	float avg, min, max;
 
 private:
 	int num_courses;
