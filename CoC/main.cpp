@@ -133,10 +133,14 @@ int main(int argc, char** argv)
 		}
 	}*/
 
-	// get correlation statistics
+	// TEST01: get correlation statistics
 	vector<Course*>* cptr;
 	cptr = &course_list;
 	multi_graph->get_correlation_stats(cptr);
+
+	// TEST02: get course info
+	course_list[0]->print_student_list();
+	cout << course_list[0]->get_num_enrolled_students();
 
 	// graphical interface
 	glutInit(&argc, argv);

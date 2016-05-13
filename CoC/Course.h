@@ -74,6 +74,7 @@ public:
 		printf("\n");
 	}
 
+	// get course name in array[4] e.g. gs24
 	char* get_course_name()
 	{
 		char* name = new char[4];
@@ -117,6 +118,12 @@ public:
 		name[3] = num % 10 + '0';
 
 		return name;
+	}
+
+	// get the number of enrolled students
+	int get_num_enrolled_students()
+	{
+		return student_list.size();
 	}
 
 private:
