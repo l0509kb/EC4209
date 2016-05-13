@@ -157,17 +157,25 @@ public:
 		
 		popularity = num_students / float(num_total_students);
 
-		if (_num == -1)
-			cout << "[Ideal Case]" << endl;
-		else
-			cout << "[Not an Ideal Case]" << endl;
-		cout << "The number of registered students: " << num_students << endl;
-		cout << "The size of the class: " << class_size << endl;
-		cout << "The number of classes: " << num_classes << endl;
-		cout << "The popularity of the course: " << popularity << endl;
-		cout << "The availability of the course: " << availability << endl;
+		//if (_num == -1)
+		//	cout << "[Ideal Case]" << endl;
+		//else
+		//	cout << "[Not an Ideal Case]" << endl;
+		//cout << "The number of registered students: " << num_students << endl;
+		//cout << "The size of the class: " << class_size << endl;
+		//cout << "The number of classes: " << num_classes << endl;
+		//cout << "The popularity of the course: " << popularity << endl;
+		//cout << "The availability of the course: " << availability << endl;
+	}
 
+	float get_popularity()
+	{
+		return popularity;
+	}
 
+	float get_availability()
+	{
+		return availability;
 	}
 
 private:

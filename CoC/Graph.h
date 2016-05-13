@@ -216,6 +216,36 @@ public:
 		cout << "Correlation Statistics" << endl << "avg: " << avg << " min: " << min << " Max: " << max << endl;
 	}
 	
+	// get maximum popularity
+	float get_max_popularity()
+	{
+		float max = 0;
+
+		for (int i = 0; i < num_courses; i++)
+		{
+			float _pop = get_course(i)->get_popularity();
+			if (max < _pop)
+				max = _pop;
+		}
+
+		return max;
+	}
+
+	// get maximum availability
+	float get_max_availability()
+	{
+		float max = 0;
+
+		for (int i = 0; i < num_courses; i++)
+		{
+			float _ava = get_course(i)->get_availability();
+			if (max < _ava)
+				max = _ava;
+		}
+
+		return max;
+	}
+
 	// correlation statistics
 	float avg, min, max;
 

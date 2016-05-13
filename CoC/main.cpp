@@ -28,7 +28,7 @@ float rotate_angle = 0.0f;
 bool r_pressed = false;
 float threshold = 0.0f;
 float thr_step = 0.05f;
-bool view = true;
+int view = 1;
 
 // variables
 bool is_parsed = false;
@@ -154,6 +154,9 @@ int main(int argc, char** argv)
 
 	// TEST03: get popularity and availability of the course
 	int _size = student_list.size();
+	for (int j = 0; j < course_list.size(); j++)
+		course_list[j]->set_course_size(30, -1, _size);
+	/*
 	// ideal case, students < class size
 	course_list[0]->set_course_size(15, -1, _size);
 	// ideal case, students == class size
@@ -167,6 +170,7 @@ int main(int argc, char** argv)
 	course_list[0]->set_course_size(10, 1, _size);
 	// real case, students > class size
 	course_list[0]->set_course_size(5, 1, _size);
+	*/
 
 
 	// graphical interface
@@ -179,9 +183,10 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(keyboard);
 
 	glutCreateMenu(menu);
-	glutAddMenuEntry("Wheel of Fortune", 1);
-	glutAddMenuEntry("Distribution", 2);
-	//glutAddMenuEntry("Spot Light", 3);
+	glutAddMenuEntry("View Correlation", 1);
+	glutAddMenuEntry("View Popularity", 2);
+	glutAddMenuEntry("View Availability", 3);
+	glutAddMenuEntry("View Distribution", 4);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	glutMainLoop();
@@ -200,7 +205,7 @@ void display()
 	glGetFloatv(GL_LINE_WIDTH_RANGE, sizeL);
 	glPointSize(size[0] * 6);
 
-	if (view)
+	if (view < 4)
 	{
 		if (r_pressed)
 		{
@@ -219,6 +224,7 @@ void display()
 			{
 				char* name = new char[4];
 				name = course_list[j]->get_course_name();
+					
 				switch (course_list[j]->get_track())
 				{
 				case 1:
@@ -246,11 +252,23 @@ void display()
 					glColor3f(0.196078, 0.6, 0.8);
 					break;
 				}
-				j++;
 
 				glBegin(GL_POINTS);
 				glVertex3f(80 * cos(angle), 80 * sin(angle), 0.0);
 				glEnd();
+
+				if (view == 2)
+				{
+					float weight = course_list[j]->get_popularity() / multi_graph->get_max_popularity();
+					glColor3f(weight, weight, weight);
+				}
+				if (view == 3)
+				{
+					float weight = course_list[j]->get_availability() / multi_graph->get_max_availability();
+					glColor3f(weight, weight, weight);
+				}
+
+				j++;
 
 				glPushMatrix();
 				glTranslatef(81 * cos(angle), 81 * sin(angle), 0.0);
@@ -428,18 +446,18 @@ void keyboard(unsigned char key, int x, int y)
 
 void menu(int value)
 {
-
+	view = value;
+	/*
 	switch (value)
 	{
 	case 1:
-		view = true;
+		view = 1;
 		break;
 	case 2:
-		view = false;
+		view = 2;
 		break;
 	}
-
-
+	*/
 
 	glutPostRedisplay();
 }
