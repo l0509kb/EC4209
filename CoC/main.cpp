@@ -139,11 +139,26 @@ int main(int argc, char** argv)
 	cptr = &course_list;
 	simple_graph->get_correlation_stats(cptr);
 
-	/*
 	// TEST02: get course info
 	course_list[0]->print_student_list();
-	cout << course_list[0]->get_num_enrolled_students();
-	*/
+	cout << course_list[0]->get_num_enrolled_students() << endl;
+
+	// TEST03: get popularity and availability of the course
+	int _size = student_list.size();
+	// ideal case, students < class size
+	course_list[0]->set_course_size(15, -1, _size);
+	// ideal case, students == class size
+	course_list[0]->set_course_size(10, -1, _size);
+	// ideal case, students > class size
+	course_list[0]->set_course_size(5, -1, _size);
+
+	// real case, students < class size
+	course_list[0]->set_course_size(15, 1, _size);
+	// real case, students == class size
+	course_list[0]->set_course_size(10, 1, _size);
+	// real case, students > class size
+	course_list[0]->set_course_size(5, 1, _size);
+
 
 	// graphical interface
 	glutInit(&argc, argv);

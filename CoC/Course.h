@@ -12,6 +12,12 @@ public:
 	{
 		track = _track;
 		num = _num;
+
+		// by default
+		popularity = 0;
+		availability = 0;
+		class_size = 0;
+		num_classes = 0;
 	}
 
 	// get course track
@@ -126,10 +132,53 @@ public:
 		return student_list.size();
 	}
 
+	// set course size, number of classes
+	void set_course_size(int _size, int _num, int num_total_students)
+	{
+		class_size = _size;
+		num_classes = _num;
+
+		float num_students = student_list.size();
+
+		// in an ideal case
+		if (_num == -1)
+		{
+			num_classes = ceil(num_students / class_size);
+			availability = 1;
+		}
+		else// number of classes are already set
+		{
+			num_classes = _num;
+			if ((int)num_students <= class_size * num_classes)
+				availability = 1;
+			else
+				availability = float(class_size * num_classes) / num_students;
+		}
+		
+		popularity = num_students / float(num_total_students);
+
+		if (_num == -1)
+			cout << "[Ideal Case]" << endl;
+		else
+			cout << "[Not an Ideal Case]" << endl;
+		cout << "The number of registered students: " << num_students << endl;
+		cout << "The size of the class: " << class_size << endl;
+		cout << "The number of classes: " << num_classes << endl;
+		cout << "The popularity of the course: " << popularity << endl;
+		cout << "The availability of the course: " << availability << endl;
+
+
+	}
+
 private:
 	// track: gs == 1 ch == 2 cs == 3 ... ph == 8
 	int track;
 	int num;
+
+	float popularity;
+	float availability;
+	int class_size;// this is the size of one single class of the course
+	int num_classes;// this is the number of classes of the course
 
 	// list of enrolled students
 	vector<Student*> student_list;
