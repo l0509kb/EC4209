@@ -133,14 +133,17 @@ int main(int argc, char** argv)
 		}
 	}*/
 
+	
 	// TEST01: get correlation statistics
 	vector<Course*>* cptr;
 	cptr = &course_list;
-	multi_graph->get_correlation_stats(cptr);
+	simple_graph->get_correlation_stats(cptr);
 
+	/*
 	// TEST02: get course info
 	course_list[0]->print_student_list();
 	cout << course_list[0]->get_num_enrolled_students();
+	*/
 
 	// graphical interface
 	glutInit(&argc, argv);
@@ -243,11 +246,13 @@ void display()
 		{
 			for (int y = 0; y < x; y++)
 			{
-				float weight = multi_graph->get_correlation_addition(course_list[x], course_list[y]);
+				float weight = simple_graph->get_correlation(course_list[x], course_list[y]);
 
-				if ((weight >= threshold) && (weight <= multi_graph->max))
+				//float weight = multi_graph->get_correlation_addition(course_list[x], course_list[y]);
+
+				if ((weight >= threshold) && (weight <= simple_graph->max))//multi_graph->max))
 				{
-					float range = multi_graph->max - threshold;
+					float range = simple_graph->max - threshold;//multi_graph->max - threshold;
 
 					glColor3f(0, (weight - threshold) / range, (weight - threshold) / range);
 					glLineWidth(sizeL[0] * 4.5 * (weight - threshold) / range);
@@ -271,7 +276,8 @@ void display()
 		{
 			for (int y = 0; y < x; y++)
 			{
-				float weight = multi_graph->get_correlation_addition(course_list[x], course_list[y]);
+				float weight = simple_graph->get_correlation(course_list[x], course_list[y]);
+				//float weight = multi_graph->get_correlation_addition(course_list[x], course_list[y]);
 
 				if (weight >= 0)
 				{
@@ -356,8 +362,6 @@ void display()
 		glEnd();
 
 	}
-
-
 
 	glutSwapBuffers(); // this is only used for double buffers
 }

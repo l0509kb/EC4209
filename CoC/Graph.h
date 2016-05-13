@@ -191,9 +191,9 @@ public:
 		{
 			for (int y = 0; y < x; y++)
 			{
-				float weight = get_correlation_addition(cptr->at(x), cptr->at(y));
+				float weight = get_correlation(cptr->at(x), cptr->at(y));
+				//float weight = get_correlation_addition(cptr->at(x), cptr->at(y));
 
-				//cout << weight << endl;
 				// don't count the disconncted edges
 				if (weight >= 0)
 				{
