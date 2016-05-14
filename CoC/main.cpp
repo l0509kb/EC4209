@@ -149,13 +149,19 @@ int main(int argc, char** argv)
 	simple_graph->get_correlation_stats(cptr);
 
 	// TEST02: get course info
-	course_list[0]->print_student_list();
 	cout << course_list[0]->get_num_enrolled_students() << endl;
+	course_list[0]->print_student_list();
 
 	// TEST03: get popularity and availability of the course
 	int _size = student_list.size();
 	for (int j = 0; j < course_list.size(); j++)
 		course_list[j]->set_course_size(30, -1, _size);
+
+	// TEST04: get neighbors of a course
+	int _length = multi_graph->get_neighbors(course_list[40])->size();
+	cout << _length << endl;
+	for (int i = 0; i < _length; i++)
+		multi_graph->get_neighbors(course_list[1])->at(i)->print_course_info();
 	/*
 	// ideal case, students < class size
 	course_list[0]->set_course_size(15, -1, _size);
@@ -586,7 +592,7 @@ bool in_conversion(const char* path)
 		s_id++;
 	}
 
-	// read in test.txt
+	// read in list.txt
 
 
 	return true;

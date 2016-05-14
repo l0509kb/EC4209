@@ -38,8 +38,8 @@ public:
 
 	// return TRUE if nodes have an edge, FALSE if not
 	bool is_edge(Course* i, Course* j) {
-		int cor = get_correlation(i, j);
-		if (cor >= 0)
+		float cor = get_correlation(i, j);
+		if (cor > 0)
 			return true;
 		else
 			return false;
@@ -244,6 +244,21 @@ public:
 		}
 
 		return max;
+	}
+
+	// get neighbors of Course i
+	vector<Course*>* get_neighbors(Course* i)
+	{
+		vector<Course*>* list = new vector<Course*>;
+
+		for (int j = 0; j < num_courses; j++)
+		{
+			Course* ptr = get_course(j);
+			if (is_edge(i, ptr))
+				list->push_back(get_course(j));
+		}
+
+		return list;
 	}
 
 	// correlation statistics
