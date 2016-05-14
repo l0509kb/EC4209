@@ -179,7 +179,7 @@ public:
 	}
 
 private:
-	// track: gs == 1 ch == 2 cs == 3 ... ph == 8
+	// track: gs == 1 bi == 2 ch == 3 cs == 4 ... ph == 8
 	int track;
 	int num;
 

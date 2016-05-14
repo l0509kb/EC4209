@@ -23,12 +23,16 @@ void display();
 void reshape(int w, int h);
 void keyboard(unsigned char key, int x, int y);
 void menu(int value);
+void mouse(int button, int state, int x, int y);
 
 float rotate_angle = 0.0f;
 bool r_pressed = false;
 float threshold = 0.0f;
 float thr_step = 0.05f;
 int view = 1;
+float mouse_x = 0;
+float mouse_y = 0;
+bool mouse_down = false;
 
 // variables
 bool is_parsed = false;
@@ -187,6 +191,7 @@ int main(int argc, char** argv)
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
+	glutMouseFunc(mouse);
 
 	glutCreateMenu(menu);
 	glutAddMenuEntry("View Correlation", 1);
@@ -222,6 +227,7 @@ void display()
 		int node_num = multi_graph->get_size();
 		char* c = new char[node_num];
 
+		int clicked = -1;
 		int j = 0;
 		for (float angle = 0.0; angle <= 2.0 * PI; angle += 2 * PI / node_num)
 		{
@@ -233,30 +239,47 @@ void display()
 					
 				switch (course_list[j]->get_track())
 				{
+				// gs
 				case 1:
-					glColor3f(1.0, 0.498039, 0.0);
+					glColor3f(0.4, 0.804, 0.667);// medium aquamarine
 					break;
+				// bi
 				case 2:
-					glColor3f(0.137255, 0.556863, 0.137255);
+					glColor3f(1, 0.843, 0);// gold
 					break;
+				// ch
 				case 3:
-					glColor3f(0.52, 0.39, 0.39);
+					glColor3f(1, 0.498, 0.314);// coral
 					break;
+				// cs
 				case 4:
-					glColor3f(0.196078, 0.8, 0.196078);
+					glColor3f(0, 0.749, 1);// deep sky blue
 					break;
+				// ev
 				case 5:
-					glColor3f(0.85, 0.85, 0.10);
+					glColor3f(1, 0.753, 0.796);// pink
 					break;
+				// ma
 				case 6:
-					glColor3f(0.498039, 0.53, 1.0);
+					glColor3f(0.498039, 0.53, 1.0);// purple
 					break;
+				// me
 				case 7:
-					glColor3f(1.00, 0.11, 0.68);
+					glColor3f(1.00, 0.11, 0.68);// hot pink
 					break;
+				// ph
 				case 8:
-					glColor3f(0.196078, 0.6, 0.8);
+					glColor3f(0.678, 1, 0.184);// green yellow
 					break;
+				}
+
+				if (mouse_down)
+				{
+					if (sqrt(pow(mouse_x - 85 * cos(angle), 2) + pow(mouse_y - 85 * sin(angle), 2)) < 2)
+					{
+						glColor3f(1, 0, 0);
+						clicked = j;
+					}
 				}
 
 				glBegin(GL_POINTS);
@@ -290,13 +313,12 @@ void display()
 			}
 		}
 
-		for (int x = 0; x < course_list.size(); x++)
+		// draw edges
+		if (mouse_down && clicked != -1)
 		{
-			for (int y = 0; y < x; y++)
+			for (int y = 0; y < course_list.size(); y++)
 			{
-				float weight = simple_graph->get_correlation(course_list[x], course_list[y]);
-
-				//float weight = multi_graph->get_correlation_addition(course_list[x], course_list[y]);
+				float weight = simple_graph->get_correlation(course_list[clicked], course_list[y]);
 
 				if ((weight >= threshold) && (weight <= simple_graph->max))//multi_graph->max))
 				{
@@ -305,9 +327,32 @@ void display()
 					glColor3f(0, (weight - threshold) / range, (weight - threshold) / range);
 					glLineWidth(sizeL[0] * 4.5 * (weight - threshold) / range);
 					glBegin(GL_LINE_STRIP);
-					glVertex3f(79 * cos(2 * PI / node_num * x), 79 * sin(2 * PI / node_num * x), 0);
+					glVertex3f(79 * cos(2 * PI / node_num * clicked), 79 * sin(2 * PI / node_num * clicked), 0);
 					glVertex3f(79 * cos(2 * PI / node_num * y), 79 * sin(2 * PI / node_num * y), 0);
 					glEnd();
+				}
+			}
+			clicked = -1;
+		}
+		else
+		{
+			for (int x = 0; x < course_list.size(); x++)
+			{
+				for (int y = 0; y < x; y++)
+				{
+					float weight = simple_graph->get_correlation(course_list[x], course_list[y]);
+
+					if ((weight >= threshold) && (weight <= simple_graph->max))//multi_graph->max))
+					{
+						float range = simple_graph->max - threshold;//multi_graph->max - threshold;
+
+						glColor3f(0, (weight - threshold) / range, (weight - threshold) / range);
+						glLineWidth(sizeL[0] * 4.5 * (weight - threshold) / range);
+						glBegin(GL_LINE_STRIP);
+						glVertex3f(79 * cos(2 * PI / node_num * x), 79 * sin(2 * PI / node_num * x), 0);
+						glVertex3f(79 * cos(2 * PI / node_num * y), 79 * sin(2 * PI / node_num * y), 0);
+						glEnd();
+					}
 				}
 			}
 		}
@@ -464,6 +509,26 @@ void menu(int value)
 		break;
 	}
 	*/
+
+	glutPostRedisplay();
+}
+
+void mouse(int button, int state, int x, int y)
+{
+	int mouseButton = button;
+	switch (button){
+	case GLUT_LEFT_BUTTON:
+		if (state == GLUT_DOWN)
+		{
+			mouse_x = (float)x / 5 - 100;
+			mouse_y = 100 - (float)y / 5;
+			
+			cout << mouse_x << " " << mouse_y << endl;
+			mouse_down = true;
+		}
+		break;
+
+	};
 
 	glutPostRedisplay();
 }
